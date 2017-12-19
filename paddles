@@ -1,5 +1,8 @@
 class GameScene: SKScene {
-    
+   
+   //paddles should also be bounding rectangles with none of those stupid boxes checked and all that other crap set to zero except for
+   //the resolution which should be 1 
+   
     var isFingerOnPaddle1 = false
     var isFingerOnPaddle2 = false
     
