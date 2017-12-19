@@ -1,0 +1,83 @@
+class GameScene: SKScene {
+    
+    var isFingerOnPaddle1 = false
+    var isFingerOnPaddle2 = false
+    
+    override func didMove(to view: SKView) {
+        super.didMove(to: view) //need
+        
+        let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        borderBody.friction = 0
+        self.physicsBody = borderBody
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //remember to set the paddles to bounding rectangles with no dynamic, unaffected by gravity with no friction
+        let touch = touches.first
+        let touchLocation = touch!.location(in: self)
+        
+        if let body = physicsWorld.body(at: touchLocation) {
+            if body.node!.name == "paddle1" {
+                print("Began touch on paddle1")
+                isFingerOnPaddle1 = true
+            }
+            if body.node!.name == "paddle2" {
+                print("Began touch on paddle2")
+                isFingerOnPaddle2 = true
+            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        
+        if isFingerOnPaddle1 {
+            let touch = touches.first
+            let touchLocation = touch!.location(in: self)
+            let previousLocation = touch!.previousLocation(in: self)
+            
+            //if yes then move the paddle depending on where player touches
+            let paddle1 = childNode(withName: "paddle1") as! SKSpriteNode
+            
+            //get spriteKit node for paddle
+            var paddleX = paddle1.position.y + (touchLocation.x - previousLocation.x)
+            
+            
+            //set position of paddle to new calculated point
+            paddle1.position = CGPoint(x: paddleX, y: paddle1.position.y)
+        }
+        
+        if isFingerOnPaddle2 {
+            let touch = touches.first
+            let touchLocation = touch!.location(in: self)
+            let previousLocation = touch!.previousLocation(in: self)
+            
+            //if yes then move the paddle depending on where player touches
+            let paddle2 = childNode(withName: "paddle2") as! SKSpriteNode
+            
+            //get spriteKit node for paddle
+            var paddleX = paddle2.position.x + (touchLocation.x - previousLocation.x)
+            
+            //set position of paddle to new calculated point
+            paddle2.position = CGPoint(x: paddleX, y: paddle2.position.y)
+        }
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        
+        isFingerOnPaddle1 = false
+        isFingerOnPaddle2 = false
+        
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    }
+    
+    
+    override func update(_ currentTime: TimeInterval) {
+        // Called before each frame is rendered
+    }
+}
