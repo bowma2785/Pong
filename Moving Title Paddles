@@ -1,0 +1,6 @@
+//set paddles to bounding rectangles with all the same crap as the regulare paddles then add the following code to didMove
+//ensure custom class is set to right class if need be 
+
+let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        borderBody.friction = 0
+        self.physicsBody = borderBody
